@@ -1,4 +1,3 @@
-
 import config from "./config";
 import apiRouter from "./api";
 
@@ -8,7 +7,7 @@ const server = express();
 server.set("view engine", "ejs");
 
 server.get("/", (req, res) => {
-	res.render("index", {data: "MY <em>CONTENT</em>"});
+	res.render("index", {content: "MY <em>CONTENT</em>"});
 });
 
 server.use("/api", apiRouter);
