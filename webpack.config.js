@@ -9,10 +9,14 @@ module.exports = {
 			{
 				test: /\.js$/,
 				loader: "babel-loader",
-				query:
-					{
-						compact: false
-					}
+				query: {
+					compact: false
+				}
+			},
+			{
+				type: "javascript/auto",
+				test: /\.json$/,
+				loader: "json-loader"
 			}
 		]
 	}
