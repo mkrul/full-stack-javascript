@@ -10,15 +10,16 @@ module.exports = {
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
-      "jsx": true
+      "jsx": true,
+			"modules": true
     },
     "sourceType": "module"
   },
   "plugins": [ "react" ],
   "rules": {
-    "indent": ["error", 2],
+    "indent": [2, "tab"],
     "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "single"],
+    "quotes": ["error", "double"],
     "semi": ["error", "always"],
     "no-console": ["warn", { "allow": ["info", "error"] }]
   }
