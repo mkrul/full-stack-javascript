@@ -3,38 +3,80 @@ import PropTypes from "prop-types";
 import Header from "./Header";
 import ContestList from "./ContestList";
 import Contest from "./Contest";
+import * as api from "../api";
 
 const pushState = (obj, url) =>
 	window.history.pushState(obj, "", url);
 
+const onPopState = (handler) => {
+	window.onpopstate = handler;
+};
+
 class App extends React.Component {
-	state = {
-		pageHeader: "Naming Contests",
-		contests: this.props.initialContests
+	static propTypes = {
+		initialData: PropTypes.object.isRequired
 	};
+	state = this.props.initialData;
 
 	componentDidMount() {
-		//
+		onPopState((event) => {
+			this.setState({
+				currentContestId: (event.state || {}).currentContestId
+			});
+		});
 	}
 
 	componentWillUnmount() {
-		//
+		onPopState(null);
 	}
 
-	fetchContest = (contestId) => {
+	fetchContestList = () => {
 		pushState(
-			{ currentContestId: contestId},
-			`/contest/${contestId}`
+			{ currentContestId: null },
+			"/"
 		);
-		this.setState({
-			pageHeader: this.state.contests[contestId].contestName,
-			currentContestId: contestId
+		api.fetchContestList().then(contests => {
+			this.setState({
+				currnetContestId: null,
+				contests
+			});
 		});
 	};
 
+	fetchContest = (contestId) => {
+		pushState(
+			{ currentContestId: contestId },
+			`/contest/${contestId}`
+		);
+
+		api.fetchContest(contestId).then(contest => {
+			this.setState({
+				currentContestId: contest.id,
+				contests: {
+					...this.state.contests,
+					[contest.id]: contest
+				}
+			});
+		});
+	};
+
+	currentContest() {
+		return this.state.contests[this.state.currentContestId];
+	}
+
+	pageHeader() {
+		if (this.state.currentContestId) {
+			return this.currentContest().contestName;
+		}
+
+		return "Naming Contests";
+	}
+
 	currentContent() {
 		if (this.state.currentContestId) {
-			return <Contest {...this.state.contests[this.state.currentContent]} />;
+			return <Contest
+				contestListClick={this.fetchContestList}
+				{...this.currentContest()} />;
 		}
 
 		return <ContestList
@@ -45,7 +87,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
-				<Header message={this.state.pageHeader} />
+				<Header message={this.pageHeader()} />
 				{this.currentContent()}
 			</div>
 		);
@@ -53,7 +95,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-	initialContests: PropTypes.object.isRequired
+	initialData: PropTypes.object.isRequired
 };
 
 export default App;

@@ -1,5 +1,6 @@
 $color-md-grey: #ccc;
 $color-lt-grey: #eee;
+$color-blue: #0000ee;
 
 .ContestPreview {
 	margin: 1em;
@@ -19,4 +20,9 @@ $color-lt-grey: #eee;
 
 .link {
 	cursor: pointer;
+}
+
+.home-link {
+	margin-top: 1em;
+	color: $color-blue;
 }
