@@ -17,7 +17,7 @@ MongoClient.connect(config.mongodbUri, { useNewUrlParser: true}, (err, client) =
 		{ id: 2,
 			categoryName: "Magazine/Newsletter",
 			contestName: "Sustainable Food Production",
-			description: "Educating the public about sustainable food production",
+			description: "Educating the public about sustainable food production.",
 			nameIds: []
 		},
 		{ id: 3,
@@ -29,7 +29,7 @@ MongoClient.connect(config.mongodbUri, { useNewUrlParser: true}, (err, client) =
 		{ id: 4,
 			categoryName: "Website",
 			contestName: "Free programming books",
-			description: "A list of free online programming books, categorized by languages/topics",
+			description: "A list of free online programming books, categorized by languages/topics.",
 			nameIds: []
 		}
 	]).then(response => {
