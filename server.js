@@ -3,9 +3,12 @@ import apiRouter from "./api";
 import sassMiddleware from "node-sass-middleware";
 import path from "path";
 import serverRender from "./serverRender";
+import bodyParser from "body-parser";
 
 import express from "express";
 const server = express();
+
+server.use(bodyParser.json);
 
 server.use(sassMiddleware({
 	src: path.join(__dirname, "sass"),
@@ -22,7 +25,10 @@ server.get(["/", "/contest/:contestId"], (req, res) => {
 				initialData
 			});
 		})
-		.catch(console.error);
+		.catch(error => {
+			console.error(error);
+			res.send(error.toString());
+		});
 });
 
 server.use("/api", apiRouter);

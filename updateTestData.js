@@ -2,8 +2,9 @@ import { MongoClient } from "mongodb";
 import assert from "assert";
 import config from "./config";
 
-MongoClient.connect(config.mongodbUri, (err, db) => {
+MongoClient.connect(config.mongodbUri, { useNewUrlParser: true}, (err, client) => {
 	assert.equal(null, err);
+	const db = client.db("test");
 
 	let contestCount = 0;
 	db.collection("contests").find({}).each((err, contest) => {
@@ -23,7 +24,7 @@ MongoClient.connect(config.mongodbUri, (err, db) => {
 				).then(() => {
 					console.info("Updated", contest._id);
 					contestCount--;
-					if (contestCount === 0) { db.close(); }
+					if (contestCount === 0) { client.close(); }
 				});
 			})
 			.catch(console.error);
